@@ -1,0 +1,825 @@
+#:kivy 2.3.0
+
+MyScreenManager:
+    Login:
+    Register:
+    Home:
+    Bill:
+    BillGST:
+    BillNoGST:
+
+
+
+<Login>:
+    name: 'login'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [0, 0, 0 ,0]
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: .95, .95, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Header
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(70)
+            padding: [0, 0]
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: .2, .4, .7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 0, 0]
+            Label:
+                text: 'Welcome to Murti Jewellers'
+                font_size: 28
+                bold: True
+                color: 1,1,1,1
+
+        # Login Card
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: dp(400), dp(320)
+            pos_hint: {'center_x': 0.5}
+            padding: 30
+            spacing: 20
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+            Label:
+                text: 'Login'
+                font_size: 24
+                color: .2, .4, .7, 1
+                bold: True
+                size_hint_y: None
+                height: dp(40)
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: 10
+                size_hint_y: None
+                height: dp(40)
+                Label:
+                    text: 'Username:'
+                    color: .2, .4, .7, 1
+                    font_size: 18
+                    size_hint_x: 0.4
+                TextInput:
+                    id: username
+                    multiline: False
+                    font_size: 18
+                    size_hint_x: 0.6
+                    on_text_validate: root.ids.Password.focus = True
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: 10
+                size_hint_y: None
+                height: dp(40)
+                Label:
+                    text: 'Password:'
+                    color: .2, .4, .7, 1
+                    font_size: 18
+                    size_hint_x: 0.4
+                TextInput:
+                    id: password
+                    multiline: False
+                    password: True
+                    font_size: 18
+                    size_hint_x: 0.6
+            Label:
+                id: error_label
+                text: ''
+                color: 1, 0, 0, 1
+                font_size: 16
+                size_hint_y: None
+                height: dp(24)
+            Button:
+                text: 'Login'
+                font_size: 20
+                background_color: .2, .6, .2, 1
+                size_hint_y: None
+                height: dp(45)
+                on_press: root.login()
+            Button:
+                text: 'Register'
+                font_size: 18
+                background_color: .2, .4, .7, 1
+                size_hint_y: None
+                height: dp(40)
+                on_press: app.root.current = 'register'
+
+<Register>:
+    name: 'register'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Register Screen'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Username:'
+            TextInput:
+                id: R_username
+                multiline: False
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Password:'
+            TextInput:
+                id: R_password
+                multiline: False
+                password: True
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                text: 'Confirm Password:'
+            TextInput:
+                id: R_confirm_password
+                multiline: False
+                password: True
+        Button:
+            text: 'Register'
+            on_press: root.register()
+        Button:
+            text: 'Back to Login'
+            on_press: app.root.current = 'login'
+
+<Home>:
+    name: 'home'
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: .95, .95, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Header
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            padding: [10, 10]
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: .2, .4, .7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [0, 0, 20, 20]
+            Label:
+                text: 'Jewellery Billing Home'
+                font_size: 28
+                bold: True
+                color: 1,1,1,1
+
+        # Main content
+        BoxLayout:
+            orientation: 'horizontal'
+            padding: [20, 20]
+            spacing: 20
+
+            # Left panel (actions)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 20
+
+                Button:
+                    text: 'Bill'
+                    font_size: 24
+                    size_hint_y: None
+                    height: dp(60)
+                    background_color: .2, .6, .9, 1
+                    on_press: 
+                        app.root.current = 'bill'
+                        root.manager.transition.direction = 'left'
+
+                Button:
+                    text: 'Export Not Paid List (PDF)'
+                    font_size: 20
+                    size_hint_y: None
+                    height: dp(50)
+                    background_color: .8, .6, .2, 1
+                    on_press: root.export_not_paid_pdf()
+
+            # Right panel (logout/exit)
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: 10
+                size_hint_x: .4
+
+                Button:
+                    text: 'Logout'
+                    font_size: 20
+                    size_hint_y: None
+                    height: dp(50)
+                    background_color: .9, .3, .3, 1
+                    on_press: app.root.current = 'login'
+
+                Button:
+                    text: 'Exit'
+                    font_size: 20
+                    size_hint_y: None
+                    height: dp(50)
+                    background_color: .3, .3, .3, 1
+                    on_press: app.stop()
+
+<Bill>:
+    name: 'bill'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [0, 0, 0, 0]
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: .95, .95, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # Header
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(70)
+            padding: [10, 10]
+            spacing: 10
+            canvas.before:
+                Color:
+                    rgba: .2, .4, .7, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20, 20, 0, 0]
+            Label:
+                text: 'Select Bill Type'
+                font_size: 28
+                bold: True
+                color: 1,1,1,1
+
+        # Card for Bill Type Selection
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: None, None
+            size: dp(400), dp(220)
+            pos_hint: {'center_x': 0.5}
+            padding: 30
+            spacing: 30
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [20]
+            Label:
+                text: 'Choose the type of bill you want to generate'
+                font_size: 20
+                color: .2, .4, .7, 1
+                bold: True
+                size_hint_y: None
+                height: dp(40)
+            BoxLayout:
+                orientation: 'horizontal'
+                spacing: 20
+                size_hint_y: None
+                height: dp(60)
+                Button:
+                    text: 'With GST'
+                    font_size: 20
+                    background_color: .2, .6, .2, 1
+                    on_press: 
+                        app.root.current = 'billgst'
+                        root.manager.transition.direction = 'left'
+                Button:
+                    text: 'Without GST'
+                    font_size: 20
+                    background_color: .8, .6, .2, 1
+                    on_press: 
+                        app.root.current = 'billnogst'
+                        root.manager.transition.direction = 'right'
+            Button:
+                text: 'Go to Home'
+                font_size: 18
+                background_color: .7, .7, .7, 1
+                size_hint_y: None
+                height: dp(45)
+                on_press: 
+                    app.root.current = 'home'
+                    root.manager.transition.direction = 'right'
+
+<BillGST>:
+    name: 'billgst'
+    ScrollView:
+        do_scroll_x: False
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: 20
+            spacing: 20
+
+            # Header
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(60)
+                padding: [10, 10]
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .2, .4, .7, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 0, 0]
+                Label:
+                    text: 'GST BILL - Murti Jewellers'
+                    font_size: 28
+                    font_color: 0,0,0,1
+                    bold: True
+                    color: 1,1,1,1
+
+            # Customer Info Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .95, .95, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Name: '
+                    TextInput:
+                        id: customer_name
+                        multiline: False
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Address: '
+                    TextInput:
+                        id: customer_address
+                        multiline: False
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Phone: '
+                    TextInput:
+                        id: customer_phone
+                        multiline: False
+                        input_filter: 'int'
+
+            # Item Info Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .98, .98, .92, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                GridLayout:
+                    cols: 4
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Name: '
+                    TextInput:
+                        id: item_name
+                        multiline: False
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Weight: '
+                    TextInput:
+                        id: item_weight
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Rate: '
+                    TextInput:
+                        id: item_rate
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Type: '
+                    Spinner:
+                        id: item_type
+                        text: 'Select Type'
+                        values: ['Gold', 'Silver']
+                        size_hint_x: None
+                        width: 150
+            # Return Item Section
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height 
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    Label:
+                        text: 'Return Item Name:'
+                    TextInput:
+                        id: return_item_name
+                        multiline: False
+                    Label:
+                        text: 'Return Item Weight:'
+                    TextInput:
+                        id: return_item_weight
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        text: 'Return Item Rate:'
+                    TextInput:
+                        id: return_item_rate
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        text: 'Return Item Type:'
+                    Spinner:
+                        id: return_item_type
+                        text: 'Select Type'
+                        values: ['Gold', 'Silver']
+                        size_hint_x: None
+                        width: 150
+                    Label:
+                        text: 'Return Item Quality:'
+                    Spinner:
+                        id: return_item_quality
+                        text: 'Select Quality'
+                        values: ['20 Carat', '18 Carat', '60% Silver']
+                        size_hint_x: None
+                        width: 150
+
+            # Final Bill Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .92, .98, .92, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                Label:
+                    color: 0,0,0,1
+                    text: 'Final Bill'
+                    font_size: 22
+                    bold: True
+                    size_hint_y: None
+                    height: dp(40)
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(35)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Net Weight:'
+                    TextInput:
+                        id: net_weight
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Net Amount:'
+                    TextInput:
+                        id: net_amount
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'GST:'
+                    TextInput:
+                        id: gst_amount
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Total Amount:'
+                    TextInput:
+                        id: total_amount
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Paid Amount:'
+                    TextInput:
+                        id: paid_amount
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Not Paid Amount:'
+                    TextInput:
+                        id: not_paid_amount
+                        multiline: False
+                        readonly: True
+
+            # Action Buttons
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(60)
+                spacing: 20
+                Button:
+                    text: 'Generate Bill'
+                    font_size: 20
+                    background_color: .2, .6, .2, 1
+                    on_press: root.generate_bill()
+                Button:
+                    text: 'Go to Home'
+                    font_size: 20
+                    background_color: .7, .7, .7, 1
+                    on_press: 
+                        app.root.current = 'home'
+                        root.manager.transition.direction = 'right'
+
+<BillNoGST>:
+    name: 'billnogst'
+    ScrollView:
+        do_scroll_x: False
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: 20
+            spacing: 20
+
+            # Header
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(60)
+                padding: [10, 10]
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .2, .4, .7, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [20, 20, 0, 0]
+                Label:
+                    text: 'BILL - Murti Jewellers'
+                    font_size: 28
+                    color: 1,1,1,1
+                    bold: True
+
+            # Customer Info Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .95, .95, 1, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Name: '
+                    TextInput:
+                        id: customer_name_nogst
+                        multiline: False
+                        on_text_validate: root.ids.customer_address.focus = True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Address: '
+                    TextInput:
+                        id: customer_address_nogst
+                        multiline: False
+                        on_text_validate: root.ids.customer_phone.focus = True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Customer Phone: '
+                    TextInput:
+                        id: customer_phone_nogst
+                        multiline: False
+                        input_filter: 'int'
+                        on_text_validate: root.ids.item_name.focus = True
+
+            # Item Info Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .98, .98, .92, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                GridLayout:
+                    cols: 4
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Name: '
+                    TextInput:
+                        id: item_name_nogst
+                        multiline: False
+                        on_text_validate: root.ids.item_weight.focus = True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Weight: '
+                    TextInput:
+                        id: item_weight_nogst
+                        multiline: False
+                        input_filter: 'float'
+                        on_text_validate: root.ids.item_rate.focus = True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Rate: '
+                    TextInput:
+                        id: item_rate_nogst
+                        multiline: False
+                        input_filter: 'float'
+                        on_text_validate: root.ids.item_type.focus = True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Item Type: '
+                    Spinner:
+                        id: item_type_nogst
+                        text: 'Select Type'
+                        values: ['Gold', 'Silver']
+                        size_hint_x: None
+                        width: 150
+
+            #Return item
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y : None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                # height : dp(50)
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(40)
+                    Label:
+                        text: 'Return Item Name:'
+                    TextInput:
+                        id: return_item_name_nogst
+                        multiline: False
+                    Label:
+                        text: 'Return Item Weight:'
+                    TextInput:
+                        id: return_item_weight_nogst
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        text: 'Return Item Rate:'
+                    TextInput:
+                        id: return_item_rate_nogst
+                        multiline: False
+                        input_filter: 'float'
+                    Label:
+                        text: 'Return Item Type:'
+                    Spinner:
+                        id: return_item_type_nogst
+                        text: 'Select Type'
+                        values: ['Gold', 'Silver']
+                        size_hint_x: None
+                        width: 150
+                    Label:
+                        text: 'Return Item Quality:'
+                    Spinner:
+                        id: return_item_quality_nogst
+                        text: 'Select Quality'
+                        values: ['20 Carat', '18 Carat', '60% Silver']
+                        size_hint_x: None
+                        width: 150
+
+            # Final Bill Card
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 15
+                spacing: 10
+                canvas.before:
+                    Color:
+                        rgba: .92, .98, .92, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [15]
+                Label:
+                    color: 0,0,0,1
+                    text: 'Final Bill'
+                    font_size: 22
+                    bold: True
+                    size_hint_y: None
+                    height: dp(40)
+                GridLayout:
+                    cols: 2
+                    size_hint_y: None
+                    height: self.minimum_height
+                    row_default_height: dp(35)
+                    row_force_default: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Net Weight:'
+                    TextInput:
+                        id: net_weight_nogst
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Net Amount:'
+                    TextInput:
+                        id: net_amount_nogst
+                        multiline: False
+                        readonly: True
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Paid Amount:'
+                    TextInput:
+                        id: paid_amount_nogst
+                        multiline: False
+                        input_filter: 'float'
+                        on_text_validate: root.generate_bill()
+                    Label:
+                        color: 0,0,0,1
+                        text: 'Not Paid Amount:'
+                    TextInput:
+                        id: not_paid_amount_nogst
+                        multiline: False
+                        readonly: True
+
+            # Action Buttons
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: dp(60)
+                spacing: 20
+                Button:
+                    text: 'Generate Bill'
+                    font_size: 20
+                    background_color: .2, .6, .2, 1
+                    on_press: root.generate_bill_no_GST()
+                Button:
+                    text: 'Go to Home'
+                    font_size: 20
+                    background_color: .7, .7, .7, 1
+                    on_press: 
+                        app.root.current = 'home'
+                        root.manager.transition.direction = 'right'
